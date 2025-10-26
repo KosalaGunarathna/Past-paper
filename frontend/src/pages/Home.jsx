@@ -27,11 +27,11 @@ export default function PastPaperWebsite() {
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
                 <input 
                   type="text" 
                   placeholder="Search for subjects, papers, or topics..."
-                  className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border-2 border-gray-200 focus:border-blue-900 focus:outline-none text-sm sm:text-base"
+                  className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border-2 border-gray-500 focus:border-blue-900 focus:outline-none text-sm sm:text-base"
                 />
               </div>
             </div>

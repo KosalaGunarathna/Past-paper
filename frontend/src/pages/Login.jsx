@@ -4,17 +4,30 @@ import { useState } from 'react';
 
 const Login = () => {
 
-const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); 
+  const [message , setMessage] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data={
+      email,
+      password
+    }
+    try{
+      console.log("Login data submitted:", data);
+       alert("Registration successful!")
+    }catch(error){
+      console.error("Login failed:", error);
+      setMessage("Login failed. Please try again.");
+    }
+
 
   };
 
   return (
     <div>
-      
         <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-8 sm:py-12">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8 md:p-10">
+          <div className="white rounded-2xl shadow-2xl w-full max-w-xl p-6 sm:p-8 md:p-10">
             <div className="text-center mb-6 sm:mb-8">
               <div className="h-16 w-16 sm:h-20 sm:w-20 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="text-white" size={32} />
@@ -28,9 +41,8 @@ const [loginForm, setLoginForm] = useState({ email: "", password: "" });
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                 <input 
                   type="email"
-                  value={loginForm.email}
-                  onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
-                  placeholder="your.email@example.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jhone@email.com"
                   className="w-full px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-blue-900 focus:outline-none text-sm sm:text-base"
                   required
                 />
@@ -40,8 +52,7 @@ const [loginForm, setLoginForm] = useState({ email: "", password: "" });
                 <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <input 
                   type="password"
-                  value={loginForm.password}
-                  onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-blue-900 focus:outline-none text-sm sm:text-base"
                   required
@@ -66,7 +77,7 @@ const [loginForm, setLoginForm] = useState({ email: "", password: "" });
 
             <div className="mt-6 text-center">
               <p className="text-sm sm:text-base text-gray-600">
-                Don't have an account? <a href="#" className="text-blue-900 hover:text-blue-700 font-medium">Sign up</a>
+                Don't have an account? <a href="/register" className="text-blue-900 hover:text-blue-700 font-medium">Sign up</a>
               </p>
             </div>
 
