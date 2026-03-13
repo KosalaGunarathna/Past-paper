@@ -16,13 +16,18 @@ export const registerUser = async (req, res) => {
     const user = req.body;
 
     if (!user.username || !user.email || !user.password) {
-        return res.status(400).json({ message: "All fields are required...." });
+        return res.status(400).json({ success: false,message: "All fields are required...." });
     }
 
     try {
+        if(await User.findOne({ email: user.email })){
+            return res.status(400).json({ success: false, message: "User already exists" });
+        }else {
+            
         const newUser = new User(user);
         await newUser.save();
         res.status(201).json({ success: true, data: newUser });
+        }
 
     } catch (error) {
         console.error("Error saving user:", error);
@@ -37,7 +42,8 @@ export const deleteUser = async (req, res) => {
     // const { id } = req.params;
     const userDetails = req.body;
     try {
-        const user = await User.findByIdAndDelete(userDetails.id);
+        const user = await User.findOneAndDelete({ id: userDetails.id });
+        // const user = await User.findOneAndDelete({ email: userDetails.email });
         res.status(200).json({
             status: 200,
             message: "User deleted successfully", 

@@ -10,8 +10,9 @@ export default function PastPaperWebsite() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-
+    // <div className="min-h:screen  bg-gradient-to-br from-blue-50 to-indigo-100 md:border-l-[150px] md:border-r-[150px] md border-black  md:mx-[10px]">
+    
+     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Home Page */}
       {currentPage === 'home' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
