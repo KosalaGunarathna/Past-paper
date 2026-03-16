@@ -1,5 +1,7 @@
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
+import {genarateToken} from "../middleware/genarateToken.js";
+
 
 export const getUsers = async (req, res) => {
     try {
@@ -22,28 +24,50 @@ export const registerUser = async (req, res) => {
     try {
         if(await User.findOne({ email: user.email })){
             return res.status(400).json({ success: false, message: "User already exists" });
-        }else {
-            
+        }    
         const newUser = new User(user);
         await newUser.save();
         res.status(201).json({ success: true, data: newUser });
-        }
+        console.log("User created successfully");
 
     } catch (error) {
         console.error("Error saving user:", error);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-    console.log(user.body);
-    res.status(201).json({ message: "User created successfully", user });
 
 };
 
+export const loginUser = async (req, res,next) => {
+    const {email, password } = req.body;
+    try {
+        const user = await User.findOne({email});
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid credentials" });
+        }
+        if (user.password !== password) {
+            return res.status(400).json({ success: false, message: "Invalid credentials" });
+        }
+
+        const token = genarateToken(user._id);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 3600000 // 1 hour
+       }).status(200).json({ success: true, message: "Login successful", user });
+       next();
+        
+    } catch (error) {
+        console.error("Error logging in user:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
 export const deleteUser = async (req, res) => {
-    // const { id } = req.params;
     const userDetails = req.body;
     try {
-        const user = await User.findOneAndDelete({ id: userDetails.id });
-        // const user = await User.findOneAndDelete({ email: userDetails.email });
+        const user = await User.findOneAndDelete({ id: userDetails._id });
+        
         res.status(200).json({
             status: 200,
             message: "User deleted successfully", 
