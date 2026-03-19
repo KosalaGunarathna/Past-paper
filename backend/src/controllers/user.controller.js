@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
-import {genarateToken} from "../middleware/genarateToken.js";
+import {generateToken} from "../middleware/genarateToken.js";
 
 
 export const getUsers = async (req, res) => {
@@ -44,17 +44,20 @@ export const loginUser = async (req, res,next) => {
         if (!user) {
             return res.status(400).json({ success: false, message: "Invalid credentials" });
         }
-        if (user.password !== password) {
-            return res.status(400).json({ success: false, message: "Invalid credentials" });
+
+        const isMatch = await user.comparePassword(password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid password" });
         }
 
-        const token = genarateToken(user._id);
+        const token = await generateToken(user._id);
 
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
             maxAge: 3600000 // 1 hour
-       }).status(200).json({ success: true, message: "Login successful", user });
+       }).status(200).json({ success: true, message: "Login successful",user});
        next();
         
     } catch (error) {
@@ -64,9 +67,11 @@ export const loginUser = async (req, res,next) => {
 };
 
 export const deleteUser = async (req, res) => {
-    const userDetails = req.body;
+    const userID = req.body._id;
+    console.log("User ID to delete:", userID);
+   
     try {
-        const user = await User.findOneAndDelete({ id: userDetails._id });
+        const user = await User.findByIdAndDelete(userID);
         
         res.status(200).json({
             status: 200,

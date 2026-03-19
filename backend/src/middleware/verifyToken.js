@@ -10,7 +10,7 @@ export const verifyToken = (req, res, next) => {
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JSON_WEB_TOKEN);
         if (!decoded) {
             return res.status(401).json({ success: false, message: "Unauthorized token or not valid" });
         }
