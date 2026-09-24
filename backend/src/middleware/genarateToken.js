@@ -21,12 +21,12 @@ export const generateToken = async (userId) => {
         const token = jwt.sign(
             { userId: userData._id, role: userData.role },
             process.env.JSON_WEB_TOKEN,
-            { expiresIn: "1h" }
+            { expiresIn: "30d" }
         );
 
         console.log("Generated token: ", token);
 
-        return token ;
+        return token;
 
     } catch (error) {
         console.error("Token generation error:", error);
